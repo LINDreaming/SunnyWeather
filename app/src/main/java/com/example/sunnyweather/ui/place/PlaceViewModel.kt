@@ -7,6 +7,11 @@ import com.example.sunnyweather.logic.model.Place
 import retrofit2.http.Query
 
 class PlaceViewModel:ViewModel() {
+
+    fun savePlace(place: Place) = Repository.savePlace(place)
+    fun getSavedPlaced() = Repository.getSavedPlace()
+    fun isPlaceSaved() = Repository.isPlaceSaved()
+
     private val searchLiveData = MutableLiveData<String>()
     val placeList = ArrayList<Place>()
     val  placeLiveData = Transformations.switchMap(searchLiveData) { query ->
@@ -15,4 +20,5 @@ class PlaceViewModel:ViewModel() {
     fun searchPlaces(query: String) {
         searchLiveData.value = query
     }
+
 }
