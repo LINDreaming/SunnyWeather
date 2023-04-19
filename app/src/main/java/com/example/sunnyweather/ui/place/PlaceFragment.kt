@@ -1,5 +1,4 @@
 package com.example.sunnyweather.ui.place
-
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -15,13 +14,13 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.sunnyweather.MainActivity
 import com.example.sunnyweather.R
 import com.example.sunnyweather.ui.weather.WeatherActivity
 
 class PlaceFragment:Fragment() {
      val viewModel by lazy { ViewModelProvider(this).get(PlaceViewModel::class.java) }
     private lateinit var adapter: PlaceAdapter
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -39,7 +38,6 @@ class PlaceFragment:Fragment() {
         recyclerView.adapter = adapter
         val searchPlaceEdit = view.findViewById<EditText>(R.id.searchPlaceEdit)
         val bgImageView = view.findViewById<ImageView>(R.id.bgImageView)
-
         searchPlaceEdit.addTextChangedListener { editable ->
         val  content = editable.toString()
         if (content.isNotEmpty()) {
@@ -65,10 +63,9 @@ class PlaceFragment:Fragment() {
            }
        })
     }
-
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        if (viewModel.isPlaceSaved()) {
+        if (activity is MainActivity && viewModel.isPlaceSaved()) {
             val place = viewModel.getSavedPlaced()
             val  intent = Intent(context,WeatherActivity::class.java).apply {
                 putExtra("location_lng",place.location.lng)
@@ -77,6 +74,7 @@ class PlaceFragment:Fragment() {
             }
             startActivity(intent)
             activity?.finish()
+            return
         }
 
     }
